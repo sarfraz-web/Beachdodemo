@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { ShoppingBag, Shield, MessageCircle, Star, Users, Zap } from "lucide-react";
 import AuthModal from "@/components/auth/auth-modal";
+import { Link } from "wouter";
 
 export default function Landing() {
   const [authModalOpen, setAuthModalOpen] = useState(false);
@@ -70,13 +71,15 @@ export default function Landing() {
             >
               Get Started
             </Button>
-            <Button 
-              variant="outline" 
-              size="lg" 
-              className="text-lg px-8 py-3"
-            >
-              Browse Products
-            </Button>
+            <Link href="/products">
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="text-lg px-8 py-3"
+              >
+                Browse Products
+              </Button>
+            </Link>
           </div>
         </div>
       </section>

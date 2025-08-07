@@ -42,6 +42,8 @@ function Router() {
       </main>
       <Footer />
       <AuthModal isOpen={authModalOpen} onClose={() => setAuthModalOpen(false)} />
+      {/* Global auth modal trigger */}
+      <div id="auth-modal-trigger" onClick={() => setAuthModalOpen(true)} style={{display: 'none'}}></div>
     </div>
   );
 }

@@ -12,12 +12,55 @@ export async function apiRequest(
   url: string,
   data?: unknown | undefined,
 ): Promise<Response> {
+  const token = localStorage.getItem('accessToken');
+  
   const res = await fetch(url, {
     method,
-    headers: data ? { "Content-Type": "application/json" } : {},
+    headers: {
+      ...(data ? { "Content-Type": "application/json" } : {}),
+      ...(token ? { "Authorization": `Bearer ${token}` } : {})
+    },
     body: data ? JSON.stringify(data) : undefined,
     credentials: "include",
   });
+
+  // Handle 401 errors by trying to refresh token
+  if (res.status === 401 && token) {
+    const refreshToken = localStorage.getItem('refreshToken');
+    if (refreshToken) {
+      try {
+        const refreshRes = await fetch('/api/auth/refresh', {
+          method: 'POST',
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ refreshToken }),
+          credentials: "include",
+        });
+
+        if (refreshRes.ok) {
+          const tokens = await refreshRes.json();
+          localStorage.setItem('accessToken', tokens.accessToken);
+          localStorage.setItem('refreshToken', tokens.refreshToken);
+          
+          // Retry original request with new token
+          return fetch(url, {
+            method,
+            headers: {
+              ...(data ? { "Content-Type": "application/json" } : {}),
+              "Authorization": `Bearer ${tokens.accessToken}`
+            },
+            body: data ? JSON.stringify(data) : undefined,
+            credentials: "include",
+          });
+        }
+      } catch (error) {
+        console.error('Token refresh failed:', error);
+      }
+    }
+    
+    // Clear tokens if refresh failed
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+  }
 
   await throwIfResNotOk(res);
   return res;
@@ -29,8 +72,12 @@ export const getQueryFn: <T>(options: {
 }) => QueryFunction<T> =
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
+    const token = localStorage.getItem('accessToken');
     const res = await fetch(queryKey.join("/") as string, {
       credentials: "include",
+      headers: {
+        ...(token ? { "Authorization": `Bearer ${token}` } : {})
+      }
     });
 
     if (unauthorizedBehavior === "returnNull" && res.status === 401) {
