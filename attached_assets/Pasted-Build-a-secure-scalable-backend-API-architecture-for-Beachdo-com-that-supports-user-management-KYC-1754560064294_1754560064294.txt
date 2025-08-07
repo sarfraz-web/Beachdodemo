@@ -1,0 +1,115 @@
+Build a secure, scalable backend API architecture for Beachdo.com that supports user management, KYC verification, product listings, real-time chat, and admin operations. The backend must be modular, testable, and production-ready.
+
+🔐 Authentication & Security
+Signup/Login (Email, Phone OTP)
+
+DigiLocker API Integration for KYC (Aadhaar)
+
+Password hashing (bcrypt)
+
+JWT-based Auth (access + refresh tokens)
+
+Role-based Access Control (Admin, Seller, Buyer)
+
+📦 Core APIs
+User APIs:
+
+Register / Login / Logout
+
+Profile Update, KYC Status
+
+Get My Listings / Saved Items
+
+Product APIs:
+
+Create / Update / Delete Listing
+
+Image upload (Cloudinary/S3 compatible)
+
+Filtered Fetch (price, location, category)
+
+Search & Pagination
+
+Boost Listing (via Admin flag)
+
+Chat APIs:
+
+Create Chat Room
+
+Send/Receive Messages (WebSocket)
+
+Message Storage & Read Receipts
+
+Admin APIs:
+
+Manage Users / Listings / Reports
+
+Approve or Reject Listings
+
+Boosted Ad Metrics
+
+Wishlist & Reports:
+
+Save/Unsave listing
+
+Report inappropriate listings or users
+
+Forum APIs:
+
+Create threads, comments
+
+Like, reply, report comments
+
+🗃️ Database Schema
+Users (id, name, email, phone, password, kycVerified, etc.)
+
+Listings (id, userId, title, description, price, category, location, images[])
+
+Chats (chatId, buyerId, sellerId, messages[])
+
+Messages (id, chatId, senderId, message, timestamp)
+
+SavedItems (userId, listingId)
+
+Reports (reportId, reporterId, type, targetId, reason)
+
+⚙️ Backend Tech Stack
+Language: Node.js (Express.js or Fastify)
+
+Database: PostgreSQL or MongoDB
+
+ORM: Prisma or Mongoose
+
+Real-Time: Socket.IO (for chat)
+
+Image Upload: Cloudinary or AWS S3
+
+Caching: Redis (for sessions & trending)
+
+Authentication: JWT + Refresh tokens
+
+API Docs: Swagger/OpenAPI
+
+Containerization: Docker + Docker Compose
+
+CI/CD: GitHub Actions / Railway / Render / Vercel (for frontend)
+
+🧪 Testing & Monitoring
+Unit & Integration Tests (Jest/Supertest)
+
+API Monitoring (Postman + NewRelic/LogRocket)
+
+Error Handling Middleware
+
+Rate Limiting, Input Validation (Joi/Zod)
+
+🔗 DevOps & Hosting
+Frontend: Vercel or Netlify
+
+Backend: Render, Railway, or DigitalOcean
+
+Database: Supabase, Neon, or MongoDB Atlas
+
+CDN: Cloudflare
+
+Monitoring: Sentry, LogRocket
