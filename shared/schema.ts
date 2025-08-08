@@ -1,8 +1,9 @@
 import { sql, relations } from "drizzle-orm";
 import { 
   pgTable, 
-  text, 
+  text,
   varchar, 
+  serial,
   timestamp, 
   integer, 
   decimal, 
@@ -12,6 +13,9 @@ import {
 } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
+
+
+
 
 // Enums
 export const userRoleEnum = pgEnum('user_role', ['admin', 'seller', 'buyer']);
